@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+              android:orientation="horizontal"
+              android:layout_width="match_parent"
+              android:layout_height="wrap_content"
+              android:paddingTop="16dp"
+              android:paddingBottom="16dp">
+
+    <TextView
+        android:id="@+id/earthquakeListItem_textView_magnitude"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_weight="33"
+        android:paddingLeft="8dp"
+        android:paddingStart="8dp"
+        android:gravity="start"
+        android:textAlignment="textStart"
+        android:text="0.00"/>
+
+    <TextView
+        android:id="@+id/earthquakeListItem_textView_cityName"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_weight="33"
+        android:gravity="start"
+        android:textAlignment="textStart"
+        android:text="San Francisco"/>
+
+    <TextView
+        android:id="@+id/earthquakeListItem_textView_date"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_weight="33"
+        android:gravity="start"
+        android:textAlignment="textStart"
+        android:text="Feb 2, 2016"/>
+
+</LinearLayout>

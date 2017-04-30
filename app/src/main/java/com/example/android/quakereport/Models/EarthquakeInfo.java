@@ -1,7 +1,7 @@
 package com.example.android.quakereport.Models;
 
+import java.text.DecimalFormat;
 import java.util.Calendar;
-import java.util.GregorianCalendar;
 
 public class EarthquakeInfo
 {
@@ -11,9 +11,9 @@ public class EarthquakeInfo
 
     public EarthquakeInfo(double magnitude, String city, Calendar date)
     {
-        this.magnitude = magnitude;
-        this.city = city;
-        this.date = date;
+        setMagnitude(magnitude);
+        setCity(city);
+        setDate(date);
     }
 
     public double getMagnitude()
@@ -23,7 +23,8 @@ public class EarthquakeInfo
 
     public void setMagnitude(double magnitude)
     {
-        this.magnitude = magnitude;
+        DecimalFormat formatter = new DecimalFormat("0.0");
+        this.magnitude = Double.parseDouble(formatter.format(magnitude));
     }
 
     public String getCity()

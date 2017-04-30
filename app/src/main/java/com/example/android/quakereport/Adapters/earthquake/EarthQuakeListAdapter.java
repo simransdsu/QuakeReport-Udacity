@@ -42,10 +42,14 @@ public class EarthQuakeListAdapter extends ArrayAdapter<EarthquakeInfo>
                 listItemView
                         .findViewById(
                                 R.id.earthquakeListItem_textView_magnitude);
-        TextView cityNameTextView = (TextView)
+        TextView locationOffsetTextView = (TextView)
                 listItemView
                         .findViewById(
-                                R.id.earthquakeListItem_textView_cityName);
+                                R.id.earthquakeListItem_textView_locationOffset);
+        TextView primaryLocationTextView = (TextView)
+                listItemView
+                        .findViewById(
+                                R.id.earthquakeListItem_textView_primaryLocation);
         TextView dateTextView = (TextView)
                 listItemView
                         .findViewById(
@@ -54,13 +58,29 @@ public class EarthQuakeListAdapter extends ArrayAdapter<EarthquakeInfo>
                 listItemView.findViewById(R.id.earthquakeListItem_textView_time);
 
         magnitudeTextView.setText(Double.toString(info.getMagnitude()));
-        cityNameTextView.setText(info.getCity());
+        setLocationTextViews(primaryLocationTextView, locationOffsetTextView, info.getCity());
         dateTextView.setText(gregorianCalendarToSimpleDate(info.getDate(), "LLL dd, yyyy"));
         timeTextView.setText(gregorianCalendarToSimpleDate(info.getDate(), "h:mm a"));
 
 
 
         return listItemView;
+    }
+
+    private void setLocationTextViews(TextView primaryLocationTextView, TextView locationOffsetTextView, String city)
+    {
+        String[] locations = city.split("of");
+
+        if(locations.length == 2)
+        {
+            locationOffsetTextView.setText(locations[0].trim() + " of");
+            primaryLocationTextView.setText(locations[1].trim());
+        }
+        else
+        {
+            locationOffsetTextView.setText("Near the".trim());
+            primaryLocationTextView.setText(city.trim());
+        }
     }
 
 

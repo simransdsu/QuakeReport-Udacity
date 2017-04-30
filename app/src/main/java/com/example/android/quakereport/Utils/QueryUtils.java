@@ -64,6 +64,7 @@ public final class QueryUtils {
                 double magnitude = propertiesJSON.getDouble("mag");
                 String place = propertiesJSON.getString("place");
                 long time = propertiesJSON.getLong("time");
+                String website = propertiesJSON.getString("url");
 
                 Calendar calenderTime = Calendar.getInstance();
                 calenderTime.setTime(new Date(time));
@@ -72,7 +73,8 @@ public final class QueryUtils {
                         new EarthquakeInfo(
                                 magnitude,
                                 place,
-                                calenderTime
+                                calenderTime,
+                                website
                         );
 
                 earthquakes.add(earthquakeInfo);

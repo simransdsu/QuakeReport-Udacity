@@ -8,12 +8,14 @@ public class EarthquakeInfo
     private double magnitude;
     private String city;
     private Calendar date;
+    private String website;
 
-    public EarthquakeInfo(double magnitude, String city, Calendar date)
+    public EarthquakeInfo(double magnitude, String city, Calendar date, String website)
     {
         setMagnitude(magnitude);
         setCity(city);
         setDate(date);
+        setWebsite(website);
     }
 
     public double getMagnitude()
@@ -45,5 +47,15 @@ public class EarthquakeInfo
     public void setDate(Calendar date)
     {
         this.date = date;
+    }
+
+    public String getWebsite()
+    {
+        return website;
+    }
+
+    public void setWebsite(String website)
+    {
+        this.website = website;
     }
 }

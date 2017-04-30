@@ -1,14 +1,15 @@
 package com.example.android.quakereport.Models;
 
+import java.util.Calendar;
 import java.util.GregorianCalendar;
 
 public class EarthquakeInfo
 {
     private double magnitude;
     private String city;
-    private GregorianCalendar date;
+    private Calendar date;
 
-    public EarthquakeInfo(double magnitude, String city, GregorianCalendar date)
+    public EarthquakeInfo(double magnitude, String city, Calendar date)
     {
         this.magnitude = magnitude;
         this.city = city;
@@ -35,12 +36,12 @@ public class EarthquakeInfo
         this.city = city;
     }
 
-    public GregorianCalendar getDate()
+    public Calendar getDate()
     {
         return date;
     }
 
-    public void setDate(GregorianCalendar date)
+    public void setDate(Calendar date)
     {
         this.date = date;
     }

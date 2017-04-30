@@ -65,14 +65,14 @@ public final class QueryUtils {
                 String place = propertiesJSON.getString("place");
                 long time = propertiesJSON.getLong("time");
 
-                Calendar c = Calendar.getInstance();
-                c.setTime(new Date(time));
+                Calendar calenderTime = Calendar.getInstance();
+                calenderTime.setTime(new Date(time));
 
                 EarthquakeInfo earthquakeInfo =
                         new EarthquakeInfo(
                                 magnitude,
                                 place,
-                                new GregorianCalendar(c.get(Calendar.YEAR), c.get(Calendar.MONTH), c.get(Calendar.DAY_OF_MONTH))
+                                calenderTime
                         );
 
                 earthquakes.add(earthquakeInfo);

@@ -9,6 +9,9 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Date;
+import java.util.GregorianCalendar;
 
 /**
  * Helper methods related to requesting and receiving earthquake data from USGS.
@@ -51,6 +54,31 @@ public final class QueryUtils {
 
             // TODO: Parse the response given by the SAMPLE_JSON_RESPONSE string and
             // build up a list of Earthquake objects with the corresponding data.
+            JSONObject earthQuakeAPIResponse = new JSONObject(SAMPLE_JSON_RESPONSE);
+            JSONArray featuresJSON = earthQuakeAPIResponse.getJSONArray("features");
+
+            for(int i=0; i < featuresJSON.length(); i++)
+            {
+                JSONObject featureJSON = featuresJSON.getJSONObject(i);
+                JSONObject propertiesJSON = featureJSON.getJSONObject("properties");
+                double magnitude = propertiesJSON.getDouble("mag");
+                String place = propertiesJSON.getString("place");
+                long time = propertiesJSON.getLong("time");
+
+                Calendar c = Calendar.getInstance();
+                c.setTime(new Date(time));
+
+                EarthquakeInfo earthquakeInfo =
+                        new EarthquakeInfo(
+                                magnitude,
+                                place,
+                                new GregorianCalendar(c.get(Calendar.YEAR), c.get(Calendar.MONTH), c.get(Calendar.DAY_OF_MONTH))
+                        );
+
+                earthquakes.add(earthquakeInfo);
+            }
+
+
 
         } catch (JSONException e) {
             // If an error is thrown when executing any of the above statements in the "try" block,

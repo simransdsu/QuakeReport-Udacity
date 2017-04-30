@@ -1,8 +1,10 @@
 package com.example.android.quakereport.Adapters.earthquake;
 
 import android.content.Context;
+import android.graphics.drawable.GradientDrawable;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
+import android.support.v4.content.ContextCompat;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -11,6 +13,8 @@ import android.widget.TextView;
 
 import com.example.android.quakereport.Models.EarthquakeInfo;
 import com.example.android.quakereport.R;
+
+import org.w3c.dom.Text;
 
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
@@ -57,7 +61,9 @@ public class EarthQuakeListAdapter extends ArrayAdapter<EarthquakeInfo>
         TextView timeTextView = (TextView)
                 listItemView.findViewById(R.id.earthquakeListItem_textView_time);
 
-        magnitudeTextView.setText(Double.toString(info.getMagnitude()));
+        double magnitudeValue = info.getMagnitude();
+        magnitudeTextView.setText(Double.toString(magnitudeValue));
+        setMagnitudeTextViewBackgroundColor(magnitudeTextView, magnitudeValue);
         setLocationTextViews(primaryLocationTextView, locationOffsetTextView, info.getCity());
         dateTextView.setText(gregorianCalendarToSimpleDate(info.getDate(), "LLL dd, yyyy"));
         timeTextView.setText(gregorianCalendarToSimpleDate(info.getDate(), "h:mm a"));
@@ -90,6 +96,48 @@ public class EarthQuakeListAdapter extends ArrayAdapter<EarthquakeInfo>
         simpleDateFormat.setCalendar(date);
         String formattedDate = simpleDateFormat.format(date.getTime());
         return formattedDate;
+    }
+
+    private void setMagnitudeTextViewBackgroundColor(TextView view, double magnitude)
+    {
+        // Set the proper background color on the magnitude circle.
+        // Fetch the background from the TextView, which is a GradientDrawable.
+        GradientDrawable magnitudeCircle = (GradientDrawable) view.getBackground();
+
+        // Get the appropriate background color based on the current earthquake magnitude
+        int magnitudeColor = getMagnitudeColor(magnitude);
+
+        // Set the color on the magnitude circle
+        magnitudeCircle.setColor(magnitudeColor);
+    }
+
+    private int getMagnitudeColor(double magnitude)
+    {
+        int magnitudeIntVal = (int) magnitude;
+        switch (magnitudeIntVal)
+        {
+            case 0:
+            case 1:
+                return ContextCompat.getColor(getContext(), R.color.magnitude1);
+            case 2:
+                return ContextCompat.getColor(getContext(), R.color.magnitude2);
+            case 3:
+                return ContextCompat.getColor(getContext(), R.color.magnitude3);
+            case 4:
+                return ContextCompat.getColor(getContext(), R.color.magnitude4);
+            case 5:
+                return ContextCompat.getColor(getContext(), R.color.magnitude5);
+            case 6:
+                return ContextCompat.getColor(getContext(), R.color.magnitude6);
+            case 7:
+                return ContextCompat.getColor(getContext(), R.color.magnitude7);
+            case 8:
+                return ContextCompat.getColor(getContext(), R.color.magnitude8);
+            case 9:
+                return ContextCompat.getColor(getContext(), R.color.magnitude9);
+            default:
+                return ContextCompat.getColor(getContext(), R.color.magnitude10plus);
+        }
     }
 
 

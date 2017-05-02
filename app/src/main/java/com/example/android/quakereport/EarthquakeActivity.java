@@ -40,7 +40,7 @@ public class EarthquakeActivity extends AppCompatActivity implements OnItemClick
     public static final String LOG_TAG = EarthquakeActivity.class.getName();
 
     private List<EarthquakeInfo> earthquakes;
-    private final String USGS_URL = "https://earthquake.usgs.gov/fdsnws/event/1/query?format=geojson&starttime=2016-01-01&endtime=2016-05-02&minfelt=50&minmagnitude=5";
+    private final String USGS_URL = "https://earthquake.usgs.gov/fdsnws/event/1/query?format=geojson&eventtype=earthquake&orderby=time&minmag=6&limit=10";
     private  EarthQuakeListAdapter adapter;
 
     @Override

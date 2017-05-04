@@ -15,7 +15,10 @@
  */
 package com.example.android.quakereport;
 
+import android.content.Context;
 import android.content.Intent;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
 import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
@@ -80,7 +83,14 @@ public class EarthquakeActivity extends AppCompatActivity
         // Set the onclick event on the list item
         earthquakeListView.setOnItemClickListener(this);
 
-        getSupportLoaderManager().initLoader(1, null, this);
+        if(isNetworkAvailable()) {
+            getSupportLoaderManager().initLoader(1, null, this);
+        } else {
+            progressSpinner.dismissProgressDialog();
+            emptyTextView.setText("No Internet Available");
+        }
+
+
 
     }
 
@@ -119,6 +129,17 @@ public class EarthquakeActivity extends AppCompatActivity
     public void onLoaderReset(Loader<List<EarthquakeInfo>> loader)
     {
         adapter.clear();
+    }
+
+    public boolean isNetworkAvailable() {
+        ConnectivityManager connMgr = (ConnectivityManager)
+                getSystemService(Context.CONNECTIVITY_SERVICE);
+
+        // Get details on the currently active default data network
+        NetworkInfo networkInfo = connMgr.getActiveNetworkInfo();
+
+        // If there is a network connection, fetch data
+        return (networkInfo != null && networkInfo.isConnected());
     }
 
 }

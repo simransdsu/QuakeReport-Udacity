@@ -27,11 +27,14 @@ import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
+import android.widget.TextView;
 
 import com.example.android.quakereport.Adapters.earthquake.EarthQuakeListAdapter;
 import com.example.android.quakereport.Loaders.EarthquakeLoader;
 import com.example.android.quakereport.Models.EarthquakeInfo;
 import com.example.android.quakereport.Utils.QueryUtils;
+
+import org.w3c.dom.Text;
 
 import java.util.ArrayList;
 import java.util.Date;
@@ -43,6 +46,8 @@ public class EarthquakeActivity extends AppCompatActivity
                    LoaderManager.LoaderCallbacks<List<EarthquakeInfo>> {
 
     public static final String LOG_TAG = EarthquakeActivity.class.getName();
+
+    private TextView emptyTextView;
 
     private List<EarthquakeInfo> earthquakes;
     private final String USGS_URL =
@@ -59,6 +64,8 @@ public class EarthquakeActivity extends AppCompatActivity
 
         // Find a reference to the {@link ListView} in the layout
         ListView earthquakeListView = (ListView) findViewById(R.id.list);
+        emptyTextView = (TextView) findViewById(R.id.emptyTextView);
+        earthquakeListView.setEmptyView(emptyTextView);
 
         // Create a new {@link ArrayAdapter} of earthquakes
         adapter = new EarthQuakeListAdapter(this, earthquakes);
@@ -99,6 +106,8 @@ public class EarthquakeActivity extends AppCompatActivity
             adapter.addAll(earthquakes);
             adapter.notifyDataSetChanged();
         }
+
+        emptyTextView.setText("No Earthquakes found");
     }
 
     @Override

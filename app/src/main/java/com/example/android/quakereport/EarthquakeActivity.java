@@ -19,6 +19,8 @@ import android.content.Intent;
 import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.support.v4.app.LoaderManager;
+import android.support.v4.content.Loader;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.widget.AdapterView;
@@ -27,6 +29,7 @@ import android.widget.ArrayAdapter;
 import android.widget.ListView;
 
 import com.example.android.quakereport.Adapters.earthquake.EarthQuakeListAdapter;
+import com.example.android.quakereport.Loaders.EarthquakeLoader;
 import com.example.android.quakereport.Models.EarthquakeInfo;
 import com.example.android.quakereport.Utils.QueryUtils;
 
@@ -35,12 +38,15 @@ import java.util.Date;
 import java.util.GregorianCalendar;
 import java.util.List;
 
-public class EarthquakeActivity extends AppCompatActivity implements OnItemClickListener{
+public class EarthquakeActivity extends AppCompatActivity
+        implements OnItemClickListener,
+                   LoaderManager.LoaderCallbacks<List<EarthquakeInfo>> {
 
     public static final String LOG_TAG = EarthquakeActivity.class.getName();
 
     private List<EarthquakeInfo> earthquakes;
-    private final String USGS_URL = "https://earthquake.usgs.gov/fdsnws/event/1/query?format=geojson&eventtype=earthquake&orderby=time&minmag=6&limit=10";
+    private final String USGS_URL =
+            "https://earthquake.usgs.gov/fdsnws/event/1/query?format=geojson&eventtype=earthquake&orderby=time&minmag=3&limit=50";
     private  EarthQuakeListAdapter adapter;
 
     @Override
@@ -64,7 +70,7 @@ public class EarthquakeActivity extends AppCompatActivity implements OnItemClick
         // Set the onclick event on the list item
         earthquakeListView.setOnItemClickListener(this);
 
-        new EarthQuakeInformationAsyncTask().execute(USGS_URL);
+        getSupportLoaderManager().initLoader(1, null, this);
 
     }
 
@@ -76,29 +82,29 @@ public class EarthquakeActivity extends AppCompatActivity implements OnItemClick
         startActivity(websiteIntent);
     }
 
-
-    private class EarthQuakeInformationAsyncTask extends AsyncTask<String, Void, List<EarthquakeInfo>>
+    @Override
+    public Loader<List<EarthquakeInfo>> onCreateLoader(int id, Bundle args)
     {
+        return new EarthquakeLoader(this, USGS_URL);
+    }
 
-        @Override
-        protected List<EarthquakeInfo> doInBackground(String... params)
+    @Override
+    public void onLoadFinished(Loader<List<EarthquakeInfo>> loader, List<EarthquakeInfo> data)
+    {
+        earthquakes = data;
+
+        adapter.clear();
+        if(earthquakes != null && !earthquakes.isEmpty())
         {
-            if(params.length != 1)
-            {
-                return null;
-            }
-
-            return QueryUtils.fetchEarthquakeData(params[0]);
-        }
-
-        @Override
-        protected void onPostExecute(List<EarthquakeInfo> earthquakeInfoList)
-        {
-            earthquakes = earthquakeInfoList;
-
-            adapter.clear();
             adapter.addAll(earthquakes);
             adapter.notifyDataSetChanged();
         }
     }
+
+    @Override
+    public void onLoaderReset(Loader<List<EarthquakeInfo>> loader)
+    {
+        adapter.clear();
+    }
+
 }

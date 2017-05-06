@@ -17,11 +17,13 @@ package com.example.android.quakereport;
 
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
 import android.support.v4.app.LoaderManager;
 import android.support.v4.content.Loader;
 import android.support.v7.app.AppCompatActivity;
@@ -58,7 +60,7 @@ public class EarthquakeActivity extends AppCompatActivity
 
     private List<EarthquakeInfo> earthquakes;
     private final String USGS_URL =
-            "https://earthquake.usgs.gov/fdsnws/event/1/query?format=geojson&eventtype=earthquake&orderby=time&minmag=3&limit=50";
+            "https://earthquake.usgs.gov/fdsnws/event/1/query";
     private  EarthQuakeListAdapter adapter;
 
     @Override
@@ -107,8 +109,23 @@ public class EarthquakeActivity extends AppCompatActivity
     @Override
     public Loader<List<EarthquakeInfo>> onCreateLoader(int id, Bundle args)
     {
+        SharedPreferences sharedPrefs = PreferenceManager.getDefaultSharedPreferences(this);
+        String minMagnitude = sharedPrefs.getString(
+                getString(R.string.settings_min_magnitude_key),
+                getString(R.string.settings_min_magnitude_default)
+        );
+        Uri baseUri = Uri.parse(USGS_URL);
+        Uri.Builder uriBuilder = baseUri.buildUpon();
+        uriBuilder.appendQueryParameter("format", "geojson");
+        uriBuilder.appendQueryParameter("eventtype", "earthquake");
+        uriBuilder.appendQueryParameter("orderby", "time");
+        uriBuilder.appendQueryParameter("minmag", minMagnitude);
+        uriBuilder.appendQueryParameter("limit", "50");
+
+
+
         progressSpinner.showProgressDialog();
-        return new EarthquakeLoader(this, USGS_URL);
+        return new EarthquakeLoader(this, uriBuilder.toString());
     }
 
     @Override
